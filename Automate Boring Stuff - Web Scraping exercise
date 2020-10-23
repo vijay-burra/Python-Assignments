@@ -1,0 +1,99 @@
+import webbrowser
+webbrowser.open('https://inventwithpython.com/')
+
+pip install --user requests
+
+import requests
+res = requests.get('https://automatetheboringstuff.com/files/rj.txt')
+type(res)
+
+res.status_code == requests.codes.ok
+
+len(res.text)
+
+print(res.text[:250])
+
+res.status_code
+
+res = requests.get('https://inventwithpython.com/page_that_does_not_exist')
+res.raise_for_status()
+
+import requests
+res = requests.get('https://inventwithpython.com/page_that_does_not_exist')
+try:
+    res.raise_for_status()
+except Exception as exc:
+    print('There was a problem: %s' % (exc))
+    
+    import requests
+res = requests.get('https://automatetheboringstuff.com/files/rj.txt')
+res.raise_for_status()
+playFile = open('RomeoAndJuliet.txt', 'wb')
+for chunk in res.iter_content(100000):
+        playFile.write(chunk)
+        
+playFile.close()
+
+pip install --user beautifulsoup4
+
+import bs4
+
+import requests, bs4
+res = requests.get('https://nostarch.com')
+res.raise_for_status()
+noStarchSoup = bs4.BeautifulSoup(res.text, 'html.parser')
+type(noStarchSoup)
+
+exampleFile = open('example1.html')
+exampleSoup = bs4.BeautifulSoup(exampleFile, 'html.parser')
+type(exampleSoup)
+
+import bs4
+exampleFile = open('example1.html')
+exampleSoup = bs4.BeautifulSoup(exampleFile.read(), 'html.parser')
+elems = exampleSoup.select('#author')
+type(elems) # elems is a list of Tag objects.
+
+len(elems)
+
+type(elems[0])
+
+str(elems[0]) # The Tag object as a string.
+
+elems[0].getText()
+
+elems[0].attrs
+
+pElems = exampleSoup.select('p')
+str(pElems[0])
+
+pElems[0].getText()
+
+str(pElems[1])
+
+pElems[1].getText()
+
+str(pElems[2])
+
+pElems[2].getText()
+
+import bs4
+soup = bs4.BeautifulSoup(open('example1.html'), 'html.parser')
+spanElem = soup.select('span')[0]
+str(spanElem)
+
+spanElem.get('id')
+
+spanElem.get('some_nonexistent_addr') == None
+
+spanElem.attrs
+
+soup = bs4.BeautifulSoup(res.text, 'html.parser')
+
+linkElems = soup.select('.package-snippet')
+
+numOpen = min(5, len(linkElems))
+for i in range(numOpen):
+    urlToOpen = 'https://pypi.org' + linkElems[i].get('href')
+    print('Opening', urlToOpen)
+    webbrowser.open(urlToOpen)
