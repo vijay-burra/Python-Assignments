@@ -1,0 +1,46 @@
+import requests
+
+import csv
+
+from bs4 import BeautifulSoup
+
+pip install --user requests
+
+pip install --user beautifulsoup4
+
+page = requests.get("https://www.nfl.com/players/active/g")
+type(page)
+
+page.status_code
+
+page.content
+
+page = requests.get("https://www.nfl.com/players/active/g")
+page.raise_for_status()
+
+soup = BeautifulSoup(page.text, 'html.parser')
+type(soup)
+
+last_links = soup.find(class_='nfl-o-table-pagination__previous')
+last_links.decompose()
+
+print(soup.prettify())
+
+player_name_list = soup.find(class_='nfl-c-player-directory')
+
+player_name_list_items = player_name_list.find_all('a')
+
+f = csv.writer(open('Sports-scraping2.csv', 'w'))
+f.writerow(['Name', 'Link'])
+
+for player_name in player_name_list_items:
+    print(player_name.prettify())
+    
+soup.find_all('p')
+
+for player_name in player_name_list_items:
+    names = player_name.contents[0]
+    links = 'https://www.nfl.com' + player_name.get('href')
+    print(names)
+    print(links)
+    f.writerow([names, links])
